@@ -910,9 +910,11 @@ let ShoppingComponent = class ShoppingComponent {
     }
     ngOnInit() {
         let data = localStorage.getItem('cart');
-        if (data !== "null") {
+        if (data) {
             this.cartproducts = JSON.parse(data);
-            this.finalcartval = this.cartproducts.length;
+            if (this.cartproducts) {
+                this.finalcartval = this.cartproducts.length;
+            }
         }
         else {
             this.cartproducts = 0;
@@ -921,7 +923,8 @@ let ShoppingComponent = class ShoppingComponent {
     addCart(index) {
         this.cartdata = this.data[index];
         let data = localStorage.getItem('cart');
-        if (data !== "null") {
+        console.log(data);
+        if (data !== null) {
             this.cartvalue = JSON.parse(data);
         }
         this.cartvalue.push(this.cartdata);

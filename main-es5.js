@@ -1625,9 +1625,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function ngOnInit() {
           var data = localStorage.getItem('cart');
 
-          if (data !== "null") {
+          if (data) {
             this.cartproducts = JSON.parse(data);
-            this.finalcartval = this.cartproducts.length;
+
+            if (this.cartproducts) {
+              this.finalcartval = this.cartproducts.length;
+            }
           } else {
             this.cartproducts = 0;
           }
@@ -1637,8 +1640,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function addCart(index) {
           this.cartdata = this.data[index];
           var data = localStorage.getItem('cart');
+          console.log(data);
 
-          if (data !== "null") {
+          if (data !== null) {
             this.cartvalue = JSON.parse(data);
           }
 
