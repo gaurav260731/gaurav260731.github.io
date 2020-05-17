@@ -91,7 +91,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"filter-container\">\n<h4>Filters</h4>\n<mat-slider\n        class=\"example-margin\"\n        [disabled]=\"disabled\"\n        [invert]=\"invert\"\n        [max]=\"max\"\n        [min]=\"min\"\n        [step]=\"step\"\n        [thumbLabel]=\"thumbLabel\"\n        [tickInterval]=\"getSliderTickInterval()\"\n        [vertical]=\"vertical\">\n    </mat-slider><br>\n    <button mat-flat-button color=\"primary\">Apply</button>\n</div>\n";
+    __webpack_exports__["default"] = "<div class=\"filter-container\">\n<h4>Filters</h4>\n<mat-slider\n        class=\"example-margin\"\n        [value]=\"productPrice\"\n        #price\n        min=\"1\"\n        max=\"700\"\n        >\n    </mat-slider>{{productPrice}}<br>\n    <button mat-flat-button color=\"primary\" (click)=\"filterProducts.emit(price)\">Apply</button>\n</div>\n";
     /***/
   },
 
@@ -131,7 +131,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<mat-toolbar color=\"primary\">\n  <a routerLink=\"/\"><i class=\"fa fa-star fa-1x\"></i></a>\n  <span class=\"spacer\"></span>\n<ul>\n  <li>\n    <input type=\"text\" placeholder=\"Search the Item\" #searchval id=\"sval\"/>\n    <a routerLink=\"/\" alt=\"search\" routerLinkActive=\"mat-accent\"><button class=\"fa fa-search fa-1x\" (click)=\"check(searchval.value)\"></button></a>\n  </li>\n  <li><a routerLink=\"/cart\" alt=\"cart\" routerLinkActive=\"mat-accent\"><i class=\"fa fa-shopping-cart fa-1x\"></i></a><span class=\"cartlenval\">{{cartlenval}}</span></li>\n</ul>\n</mat-toolbar>\n";
+    __webpack_exports__["default"] = "<mat-toolbar color=\"primary\">\n  <a routerLink=\"/\"><i class=\"fa fa-star fa-1x\"></i></a>\n  <button class=\"sortprice\" (click)=\"checkPrice.emit('highLow')\">Price - High to low</button>\n  <button class=\"sortprice\" (click)=\"checkPrice.emit('Lowhigh')\">Price - Low to High</button>\n  <button class=\"sortprice\" (click)=\"checkPrice.emit('discount')\">Discount</button>\n  <span class=\"spacer\"></span>\n<ul>\n  <li>\n    <input type=\"text\" placeholder=\"Search the Item\" #searchval id=\"sval\"/>\n    <a routerLink=\"/\" alt=\"search\" routerLinkActive=\"mat-accent\"><button class=\"fa fa-search fa-1x\" (click)=\"check(searchval.value)\"></button></a>\n  </li>\n  <li><a routerLink=\"/cart\" alt=\"cart\" routerLinkActive=\"mat-accent\"><i class=\"fa fa-shopping-cart fa-1x\"></i></a><span class=\"cartlenval\">{{cartlenval}}</span></li>\n</ul>\n</mat-toolbar>\n";
     /***/
   },
 
@@ -171,7 +171,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "\n<app-header [cartlenval] = 'finalcartval'></app-header>\n<mat-sidenav-container class=\"sidenav-container\">\n  <mat-sidenav mode=\"side\" opened><app-filter></app-filter></mat-sidenav>\n  <mat-sidenav-content>\n    <div class=\"shopping-container\" *ngFor=\"let val of data; let i=index;\">\n      <div class=\"cart-items\" id={{val.productid}}>\n        <img src=\"{{val.imageurl}}\" alt=\"{{val.name}}\" width=\"200\" height=\"200\">\n        <p>{{val.name}}</p>\n        <div class=\"price-container\">\n          <p><b>&#x20b9;{{val.discount}}</b></p>\n          <p>{{val.price}}</p>\n          <p id=\"dprice\"><b>{{val.pdiscount}}</b></p>\n        </div>\n        <div class=\"cart-container\">\n          <button class=\"addcart\" (click)=\"addCart(i)\">Add to Cart</button>\n        </div>\n      </div>\n    </div>\n  </mat-sidenav-content>\n</mat-sidenav-container>\n\n\n\n";
+    __webpack_exports__["default"] = "\n<app-header [cartlenval] = 'finalcartval' (checkPrice)=\"filtePrice($event)\"></app-header>\n<mat-sidenav-container class=\"sidenav-container\">\n  <mat-sidenav mode=\"side\" opened><app-filter (filterProducts)=\"filterdata($event)\"></app-filter></mat-sidenav>\n  <mat-sidenav-content>\n    <div class=\"shopping-container\" *ngFor=\"let val of data; let i=index;\">\n      <div class=\"cart-items\" id={{val.productid}}>\n        <img src=\"{{val.imageurl}}\" alt=\"{{val.name}}\" width=\"200\" height=\"200\">\n        <p>{{val.name}}</p>\n        <div class=\"price-container\">\n          <p><b>&#x20b9;{{val.discount}}</b></p>\n          <p>{{val.price}}</p>\n          <p id=\"dprice\"><b>{{val.pdiscount}}% off</b></p>\n        </div>\n        <div class=\"cart-container\">\n          <button class=\"addcart\" (click)=\"addCart(i)\">Add to Cart</button>\n        </div>\n      </div>\n    </div>\n  </mat-sidenav-content>\n</mat-sidenav-container>\n\n\n\n";
     /***/
   },
 
@@ -1229,36 +1229,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       function FilterComponent() {
         _classCallCheck(this, FilterComponent);
 
-        this.autoTicks = false;
-        this.disabled = false;
-        this.invert = false;
-        this.max = 100;
-        this.min = 0;
-        this.showTicks = false;
-        this.step = 1;
-        this.thumbLabel = false;
-        this.value = 0;
-        this.vertical = false;
-        this.tickInterval = 1;
+        this.productPrice = 0;
+        this.filterProducts = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
       }
 
       _createClass(FilterComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {}
-      }, {
-        key: "getSliderTickInterval",
-        value: function getSliderTickInterval() {
-          if (this.showTicks) {
-            return this.autoTicks ? 'auto' : this.tickInterval;
-          }
-
-          return 0;
-        }
       }]);
 
       return FilterComponent;
     }();
 
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()], FilterComponent.prototype, "filterProducts", void 0);
     FilterComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
       selector: 'app-filter',
       template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
@@ -1364,7 +1347,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "@font-face {\r\n  font-family: 'Verdana';\r\n  src: url('verdana.ttf');\r\n}\r\n\r\nul {\r\n  display: flex;\r\n  list-style-type: none;\r\n}\r\n\r\nul li {\r\n  float: right;\r\n}\r\n\r\n.spacer {\r\n  flex: 1 1 auto;\r\n}\r\n\r\na {\r\n  color: white;\r\n  text-decoration: none;\r\n}\r\n\r\n.fa {\r\n  padding: 5px;\r\n}\r\n\r\nbutton {\r\n  background: transparent;\r\n  border: none;\r\n  color: #fff;\r\n}\r\n\r\n#sval {\r\n  color: #fff;\r\n  background: transparent;\r\n  border: none;\r\n  border-bottom: 1px solid;\r\n}\r\n\r\n.cartlenval {\r\n  font-size: 15px;\r\n    padding: -3px;\r\n    background: red;\r\n    border-radius: 50%;\r\n    width: 23px;\r\n    position: absolute;\r\n    right: 5px;\r\n    top: 8px;\r\n    padding-bottom: 5px;\r\n    padding: -7px;\r\n    height: 22px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvaGVhZGVyL2hlYWRlci5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usc0JBQXNCO0VBQ3RCLHVCQUE4QjtBQUNoQzs7QUFFQTtFQUNFLGFBQWE7RUFDYixxQkFBcUI7QUFDdkI7O0FBRUE7RUFDRSxZQUFZO0FBQ2Q7O0FBRUE7RUFDRSxjQUFjO0FBQ2hCOztBQUVBO0VBQ0UsWUFBWTtFQUNaLHFCQUFxQjtBQUN2Qjs7QUFFQTtFQUNFLFlBQVk7QUFDZDs7QUFFQTtFQUNFLHVCQUF1QjtFQUN2QixZQUFZO0VBQ1osV0FBVztBQUNiOztBQUVBO0VBQ0UsV0FBVztFQUNYLHVCQUF1QjtFQUN2QixZQUFZO0VBQ1osd0JBQXdCO0FBQzFCOztBQUVBO0VBQ0UsZUFBZTtJQUNiLGFBQWE7SUFDYixlQUFlO0lBQ2Ysa0JBQWtCO0lBQ2xCLFdBQVc7SUFDWCxrQkFBa0I7SUFDbEIsVUFBVTtJQUNWLFFBQVE7SUFDUixtQkFBbUI7SUFDbkIsYUFBYTtJQUNiLFlBQVk7SUFDWixrQkFBa0I7QUFDdEIiLCJmaWxlIjoic3JjL2FwcC9oZWFkZXIvaGVhZGVyLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJAZm9udC1mYWNlIHtcclxuICBmb250LWZhbWlseTogJ1ZlcmRhbmEnO1xyXG4gIHNyYzogdXJsKC4uLy4uLy4uL3ZlcmRhbmEudHRmKTtcclxufVxyXG5cclxudWwge1xyXG4gIGRpc3BsYXk6IGZsZXg7XHJcbiAgbGlzdC1zdHlsZS10eXBlOiBub25lO1xyXG59XHJcblxyXG51bCBsaSB7XHJcbiAgZmxvYXQ6IHJpZ2h0O1xyXG59XHJcblxyXG4uc3BhY2VyIHtcclxuICBmbGV4OiAxIDEgYXV0bztcclxufVxyXG5cclxuYSB7XHJcbiAgY29sb3I6IHdoaXRlO1xyXG4gIHRleHQtZGVjb3JhdGlvbjogbm9uZTtcclxufVxyXG5cclxuLmZhIHtcclxuICBwYWRkaW5nOiA1cHg7XHJcbn1cclxuXHJcbmJ1dHRvbiB7XHJcbiAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7XHJcbiAgYm9yZGVyOiBub25lO1xyXG4gIGNvbG9yOiAjZmZmO1xyXG59XHJcblxyXG4jc3ZhbCB7XHJcbiAgY29sb3I6ICNmZmY7XHJcbiAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7XHJcbiAgYm9yZGVyOiBub25lO1xyXG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZDtcclxufVxyXG5cclxuLmNhcnRsZW52YWwge1xyXG4gIGZvbnQtc2l6ZTogMTVweDtcclxuICAgIHBhZGRpbmc6IC0zcHg7XHJcbiAgICBiYWNrZ3JvdW5kOiByZWQ7XHJcbiAgICBib3JkZXItcmFkaXVzOiA1MCU7XHJcbiAgICB3aWR0aDogMjNweDtcclxuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAgIHJpZ2h0OiA1cHg7XHJcbiAgICB0b3A6IDhweDtcclxuICAgIHBhZGRpbmctYm90dG9tOiA1cHg7XHJcbiAgICBwYWRkaW5nOiAtN3B4O1xyXG4gICAgaGVpZ2h0OiAyMnB4O1xyXG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG59XHJcblxyXG5cclxuXHJcbiJdfQ== */";
+    __webpack_exports__["default"] = "@font-face {\r\n  font-family: 'Verdana';\r\n  src: url('verdana.ttf');\r\n}\r\n\r\nul {\r\n  display: flex;\r\n  list-style-type: none;\r\n}\r\n\r\nul li {\r\n  float: right;\r\n}\r\n\r\n.spacer {\r\n  flex: 1 1 auto;\r\n}\r\n\r\na {\r\n  color: white;\r\n  text-decoration: none;\r\n}\r\n\r\n.fa {\r\n  padding: 5px;\r\n}\r\n\r\nbutton {\r\n  background: transparent;\r\n  border: none;\r\n  color: #fff;\r\n}\r\n\r\nbutton.sortprice {\r\n  background: yellow;\r\n  margin-right: 5px;\r\n  color: #000;\r\n  padding: 5px;\r\n  border-radius: 5px;\r\n  cursor: pointer;\r\n}\r\n\r\n#sval {\r\n  color: #fff;\r\n  background: transparent;\r\n  border: none;\r\n  border-bottom: 1px solid;\r\n}\r\n\r\n.cartlenval {\r\n  font-size: 15px;\r\n    padding: -3px;\r\n    background: red;\r\n    border-radius: 50%;\r\n    width: 23px;\r\n    position: absolute;\r\n    right: 5px;\r\n    top: 8px;\r\n    padding-bottom: 5px;\r\n    padding: -7px;\r\n    height: 22px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvaGVhZGVyL2hlYWRlci5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usc0JBQXNCO0VBQ3RCLHVCQUE4QjtBQUNoQzs7QUFFQTtFQUNFLGFBQWE7RUFDYixxQkFBcUI7QUFDdkI7O0FBRUE7RUFDRSxZQUFZO0FBQ2Q7O0FBRUE7RUFDRSxjQUFjO0FBQ2hCOztBQUVBO0VBQ0UsWUFBWTtFQUNaLHFCQUFxQjtBQUN2Qjs7QUFFQTtFQUNFLFlBQVk7QUFDZDs7QUFFQTtFQUNFLHVCQUF1QjtFQUN2QixZQUFZO0VBQ1osV0FBVztBQUNiOztBQUVBO0VBQ0Usa0JBQWtCO0VBQ2xCLGlCQUFpQjtFQUNqQixXQUFXO0VBQ1gsWUFBWTtFQUNaLGtCQUFrQjtFQUNsQixlQUFlO0FBQ2pCOztBQUVBO0VBQ0UsV0FBVztFQUNYLHVCQUF1QjtFQUN2QixZQUFZO0VBQ1osd0JBQXdCO0FBQzFCOztBQUVBO0VBQ0UsZUFBZTtJQUNiLGFBQWE7SUFDYixlQUFlO0lBQ2Ysa0JBQWtCO0lBQ2xCLFdBQVc7SUFDWCxrQkFBa0I7SUFDbEIsVUFBVTtJQUNWLFFBQVE7SUFDUixtQkFBbUI7SUFDbkIsYUFBYTtJQUNiLFlBQVk7SUFDWixrQkFBa0I7QUFDdEIiLCJmaWxlIjoic3JjL2FwcC9oZWFkZXIvaGVhZGVyLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJAZm9udC1mYWNlIHtcclxuICBmb250LWZhbWlseTogJ1ZlcmRhbmEnO1xyXG4gIHNyYzogdXJsKC4uLy4uLy4uL3ZlcmRhbmEudHRmKTtcclxufVxyXG5cclxudWwge1xyXG4gIGRpc3BsYXk6IGZsZXg7XHJcbiAgbGlzdC1zdHlsZS10eXBlOiBub25lO1xyXG59XHJcblxyXG51bCBsaSB7XHJcbiAgZmxvYXQ6IHJpZ2h0O1xyXG59XHJcblxyXG4uc3BhY2VyIHtcclxuICBmbGV4OiAxIDEgYXV0bztcclxufVxyXG5cclxuYSB7XHJcbiAgY29sb3I6IHdoaXRlO1xyXG4gIHRleHQtZGVjb3JhdGlvbjogbm9uZTtcclxufVxyXG5cclxuLmZhIHtcclxuICBwYWRkaW5nOiA1cHg7XHJcbn1cclxuXHJcbmJ1dHRvbiB7XHJcbiAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7XHJcbiAgYm9yZGVyOiBub25lO1xyXG4gIGNvbG9yOiAjZmZmO1xyXG59XHJcblxyXG5idXR0b24uc29ydHByaWNlIHtcclxuICBiYWNrZ3JvdW5kOiB5ZWxsb3c7XHJcbiAgbWFyZ2luLXJpZ2h0OiA1cHg7XHJcbiAgY29sb3I6ICMwMDA7XHJcbiAgcGFkZGluZzogNXB4O1xyXG4gIGJvcmRlci1yYWRpdXM6IDVweDtcclxuICBjdXJzb3I6IHBvaW50ZXI7XHJcbn1cclxuXHJcbiNzdmFsIHtcclxuICBjb2xvcjogI2ZmZjtcclxuICBiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDtcclxuICBib3JkZXI6IG5vbmU7XHJcbiAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkO1xyXG59XHJcblxyXG4uY2FydGxlbnZhbCB7XHJcbiAgZm9udC1zaXplOiAxNXB4O1xyXG4gICAgcGFkZGluZzogLTNweDtcclxuICAgIGJhY2tncm91bmQ6IHJlZDtcclxuICAgIGJvcmRlci1yYWRpdXM6IDUwJTtcclxuICAgIHdpZHRoOiAyM3B4O1xyXG4gICAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gICAgcmlnaHQ6IDVweDtcclxuICAgIHRvcDogOHB4O1xyXG4gICAgcGFkZGluZy1ib3R0b206IDVweDtcclxuICAgIHBhZGRpbmc6IC03cHg7XHJcbiAgICBoZWlnaHQ6IDIycHg7XHJcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XHJcbn1cclxuXHJcblxyXG5cclxuIl19 */";
     /***/
   },
 
@@ -1403,6 +1386,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var HeaderComponent = /*#__PURE__*/function () {
       function HeaderComponent() {
         _classCallCheck(this, HeaderComponent);
+
+        this.checkPrice = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
       }
 
       _createClass(HeaderComponent, [{
@@ -1421,6 +1406,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], HeaderComponent.prototype, "cartlenval", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()], HeaderComponent.prototype, "checkPrice", void 0);
     HeaderComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
       selector: 'app-header',
       template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
@@ -1571,53 +1557,55 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           imageurl: 'https://images.unsplash.com/photo-1511385348-a52b4a160dc2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
           name: 'Laptop',
           price: '300',
-          discount: '200',
-          pdiscount: '65% off'
+          discount: '250',
+          pdiscount: '65'
         }, {
           productid: 2,
           imageurl: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
           name: 'Mobile',
           price: '400',
-          discount: '200',
-          pdiscount: '35% off'
+          discount: '300',
+          pdiscount: '35'
         }, {
           productid: 3,
           imageurl: 'https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
           name: 'Camera',
           price: '500',
-          discount: '100',
-          pdiscount: '55% off'
+          discount: '400',
+          pdiscount: '55'
         }, {
           productid: 4,
           imageurl: 'https://www.sony.co.in/image/2e299427c2a9958eab3ad2e8c7108593?fmt=pjpeg&wid=1014&hei=396&bgcolor=F1F5F9&bgc=F1F5F9',
           name: 'Handycam',
           price: '700',
-          discount: '100',
-          pdiscount: '10% off'
+          discount: '600',
+          pdiscount: '15'
         }, {
           productid: 5,
           imageurl: 'https://icdn3.digitaltrends.com/image/digitaltrends/gopro-hero-review-1.jpg',
           name: 'Gopro',
           price: '900',
-          discount: '200',
-          pdiscount: '20% off'
+          discount: '800',
+          pdiscount: '20'
         }, {
           productid: 6,
           imageurl: 'https://www.apple.com/newsroom/images/product/iphone/standard/Apple_new-iphone-se-white_04152020_big.jpg.large.jpg',
           name: 'iphone',
           price: '900',
           discount: '200',
-          pdiscount: '20% off'
+          pdiscount: '22'
         }, {
           productid: 7,
           imageurl: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTP62_VW_34FR+watch-40-alum-spacegray-cell-5s_VW_34FR_WF_CO?wid=1400&hei=1400&fmt=p-jpg&qlt=80&op_usm=0.5,0.5&.v=1566449863965,1569365625508',
           name: 'Apple watch',
           price: '950',
-          discount: '200',
-          pdiscount: '20% off'
+          discount: '210',
+          pdiscount: '25'
         }];
         this.finalcartval = 0;
+        this.price = 0;
         this.cartvalue = [];
+        this.filtercart = [];
       }
 
       _createClass(ShoppingComponent, [{
@@ -1642,7 +1630,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var data = localStorage.getItem('cart');
           console.log(data);
 
-          if (data !== null) {
+          if (data !== "null") {
             this.cartvalue = JSON.parse(data);
           }
 
@@ -1656,6 +1644,40 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "updateCartData",
         value: function updateCartData(updatedval) {
           this.cartproducts = updatedval;
+        }
+      }, {
+        key: "filtePrice",
+        value: function filtePrice(val) {
+          console.log(this.data.sort(function (a, b) {
+            return parseInt(b.discount) - parseInt(a.discount);
+          }));
+
+          if (val === 'highLow') {
+            return this.data.sort(function (a, b) {
+              return parseInt(b.discount) - parseInt(a.discount);
+            });
+          }
+
+          if (val === 'Lowhigh') {
+            return this.data.sort(function (a, b) {
+              return parseInt(a.discount) - parseInt(b.discount);
+            });
+          }
+
+          if (val === 'discount') {
+            return this.data.sort(function (a, b) {
+              return parseInt(a.pdiscount) - parseInt(b.pdiscount);
+            });
+          }
+        }
+      }, {
+        key: "filterdata",
+        value: function filterdata(val) {
+          console.log(this.data);
+          console.log('This is filter value' + val.value);
+          return this.data.sort(function (a, b) {
+            return parseInt(a.pdiscount) - parseInt(b.pdiscount);
+          }); //console.log(this.filtercart);
         }
       }]);
 
