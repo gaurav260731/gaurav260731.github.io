@@ -1630,7 +1630,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var data = localStorage.getItem('cart');
           console.log(data);
 
-          if (data !== "null") {
+          if (data !== null) {
             this.cartvalue = JSON.parse(data);
           }
 
@@ -1675,8 +1675,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function filterdata(val) {
           console.log(this.data);
           console.log('This is filter value' + val.value);
-          return this.data.sort(function (a, b) {
-            return parseInt(a.pdiscount) - parseInt(b.pdiscount);
+          return this.data.filter(function (item) {
+            return parseInt(item.price) > val.value;
           }); //console.log(this.filtercart);
         }
       }]);

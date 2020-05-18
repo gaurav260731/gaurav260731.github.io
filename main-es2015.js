@@ -919,7 +919,7 @@ let ShoppingComponent = class ShoppingComponent {
         this.cartdata = this.data[index];
         let data = localStorage.getItem('cart');
         console.log(data);
-        if (data !== "null") {
+        if (data !== null) {
             this.cartvalue = JSON.parse(data);
         }
         this.cartvalue.push(this.cartdata);
@@ -946,7 +946,7 @@ let ShoppingComponent = class ShoppingComponent {
     filterdata(val) {
         console.log(this.data);
         console.log('This is filter value' + val.value);
-        return this.data.sort((a, b) => parseInt(a.pdiscount) - parseInt(b.pdiscount));
+        return this.data.filter(item => parseInt(item.price) > val.value);
         //console.log(this.filtercart);
     }
 };
